@@ -7,7 +7,7 @@ WORKDIR /app/client
 
 # Copy package files and install dependencies
 COPY polling-app-client/package.json polling-app-client/package-lock.json ./
-RUN npm install
+RUN npm ci
 
 # Copy source code and build
 COPY polling-app-client/ ./
@@ -40,11 +40,15 @@ FROM eclipse-temurin:11-jre-alpine
 
 WORKDIR /app
 
+RUN addgroup -S app && adduser -S app -G app
+
 # Copy the built JAR from the build stage
 COPY --from=server-build /app/server/target/polls-0.0.1-SNAPSHOT.jar app.jar
 
+USER app
+
 # Expose the port (Render uses PORT env var)
-EXPOSE ${PORT:-5000}
+EXPOSE 5000
 
 # Run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]

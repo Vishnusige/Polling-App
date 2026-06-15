@@ -1,162 +1,122 @@
-# 📊 Polling App — Full Stack Polls Application
+# Polling App - Full Stack Polls Application
 
-A full-stack polling application similar to Twitter polls, built with **React**, **Spring Boot**, **Spring Security**, **JWT Authentication**, and **PostgreSQL**.
+A full-stack polling application similar to Twitter polls, built with React, Spring Boot, Spring Security, JWT authentication, and PostgreSQL.
 
----
+## Live Demo
 
-## 🌐 Live Demo
+Production URL: [https://polling-app-z854.onrender.com](https://polling-app-z854.onrender.com)
 
-> **[https://polling-app-z854.onrender.com](https://polling-app-z854.onrender.com)**
->
-> ⚠️ _The app is hosted on Render's free tier. The first request may take ~30 seconds if the server has spun down due to inactivity._
+The app is hosted on Render's free tier. The first request may take about 30 seconds if the service has spun down due to inactivity.
 
----
+## Screenshots
 
-## 📸 Screenshots
+| Login Page | Create Poll |
+| --- | --- |
+| <img src="screenshots/login_page.png" alt="Login Page" width="400"/> | <img src="screenshots/create_poll.png" alt="Create Poll" width="400"/> |
 
-<table>
-  <tr>
-    <td align="center"><b>🔐 Login Page</b></td>
-    <td align="center"><b>📝 Create Poll</b></td>
-  </tr>
-  <tr>
-    <td><img src="screenshots/login_page.png" alt="Login Page" width="400"/></td>
-    <td><img src="screenshots/create_poll.png" alt="Create Poll" width="400"/></td>
-  </tr>
-  <tr>
-    <td align="center"><b>🗳️ Voting Page</b></td>
-    <td align="center"><b>📊 Dashboard</b></td>
-  </tr>
-  <tr>
-    <td><img src="screenshots/voting_page.png" alt="Voting Page" width="400"/></td>
-    <td><img src="screenshots/dashboard.png" alt="Dashboard" width="400"/></td>
-  </tr>
-</table>
+| Voting Page | Dashboard |
+| --- | --- |
+| <img src="screenshots/voting_page.png" alt="Voting Page" width="400"/> | <img src="screenshots/dashboard.png" alt="Dashboard" width="400"/> |
 
----
+## Architecture
 
-## 🏗️ Architecture
-
-```
-┌─────────────────────────────────────────────────────┐
-│                    Client (Browser)                  │
-│                  React + Ant Design                  │
-└──────────────────────┬──────────────────────────────┘
-                       │ REST API (JSON)
-                       ▼
-┌─────────────────────────────────────────────────────┐
-│              Spring Boot Backend (API)               │
-│  ┌──────────────┐  ┌────────────┐  ┌──────────────┐ │
-│  │ Spring MVC   │  │  Spring    │  │     JWT      │ │
-│  │ Controllers  │  │  Security  │  │  Auth Filter │ │
-│  └──────┬───────┘  └─────┬──────┘  └──────┬───────┘ │
-│         │                │                │         │
-│  ┌──────▼────────────────▼────────────────▼───────┐ │
-│  │           Spring Data JPA (Repositories)       │ │
-│  └────────────────────┬───────────────────────────┘ │
-└───────────────────────┼─────────────────────────────┘
-                        │ JDBC
-                        ▼
-              ┌──────────────────┐
-              │    PostgreSQL    │
-              │    Database      │
-              └──────────────────┘
+```text
+Browser
+  |
+  | REST API (JSON)
+  v
+React single-page app served by Spring Boot
+  |
+  v
+Spring MVC controllers
+  |
+  v
+Spring Security + JWT authentication
+  |
+  v
+Spring Data JPA repositories
+  |
+  v
+PostgreSQL
 ```
 
-### Tech Stack
+## Tech Stack
 
-| Layer            | Technology                                  |
-| ---------------- | ------------------------------------------- |
-| **Frontend**     | React 16 · Ant Design 3 · React Router 4   |
-| **Backend**      | Spring Boot 2.7 · Spring MVC · Spring Data JPA |
-| **Security**     | Spring Security · JWT (JSON Web Tokens)     |
-| **Database**     | PostgreSQL                                  |
-| **Build Tools**  | Maven (Backend) · npm (Frontend)            |
-| **Deployment**   | Render · Docker (Multi-stage build)         |
+| Layer | Technology |
+| --- | --- |
+| Frontend | React 16, Ant Design 3, React Router 4 |
+| Backend | Spring Boot 2.7.18, Spring MVC, Spring Data JPA |
+| Security | Spring Security, JWT |
+| Database | PostgreSQL |
+| Build Tools | Maven, npm |
+| Deployment | Render Blueprint, Docker multi-stage build |
 
----
+## Features
 
-## ✨ Features
+- User signup and login with JWT-based authentication
+- Poll creation with up to 6 choices and configurable expiration
+- Voting on active polls, limited to one vote per user per poll
+- Poll result percentages with visual progress bars
+- User profiles with created polls and voting history
+- Paginated poll lists with "Load More"
+- USER and ADMIN roles initialized automatically on startup
+- Responsive layout for desktop and mobile browsers
 
-- **User Authentication** — Signup & Login with JWT-based authentication
-- **Create Polls** — Create polls with up to 6 choices and configurable expiration
-- **Vote** — Cast your vote on active polls (one vote per user per poll)
-- **Real-time Results** — View live vote percentages with visual progress bars
-- **User Profiles** — View user profiles with their created polls and voting history
-- **Pagination** — Infinite scroll with "Load More" for poll lists
-- **Role-based Authorization** — USER and ADMIN roles powered by Spring Security
-- **Responsive Design** — Works on desktop and mobile browsers
+## Project Structure
 
----
-
-## 📁 Project Structure
-
-```
+```text
 Polling-App/
-├── polling-app-client/          # React Frontend
-│   ├── public/                  # Static assets
-│   └── src/
-│       ├── app/                 # App component & routing
-│       ├── common/              # Shared components (Header, Footer, etc.)
-│       ├── constants/           # App constants & API config
-│       ├── poll/                # Poll components (PollList, NewPoll, Poll)
-│       ├── user/                # User components (Login, Signup, Profile)
-│       └── util/                # API utilities & helpers
-│
-├── polling-app-server/          # Spring Boot Backend
-│   └── src/main/java/com/example/polls/
-│       ├── config/              # Security & Web MVC configuration
-│       ├── controller/          # REST API controllers
-│       ├── exception/           # Custom exception handlers
-│       ├── model/               # JPA Entity models
-│       ├── payload/             # Request/Response DTOs
-│       ├── repository/          # Spring Data JPA repositories
-│       ├── security/            # JWT & auth components
-│       ├── service/             # Business logic services
-│       └── util/                # Utility classes
-│
-├── Dockerfile                   # Multi-stage Docker build
-├── render.yaml                  # Render deployment blueprint
-└── README.md
+|-- polling-app-client/          React frontend
+|   |-- public/                  Static template assets
+|   `-- src/
+|       |-- app/                 App component and routing
+|       |-- common/              Shared components
+|       |-- constants/           App constants and API config
+|       |-- poll/                Poll UI components
+|       |-- user/                Login, signup, and profile views
+|       `-- util/                API utilities and helpers
+|
+|-- polling-app-server/          Spring Boot backend
+|   `-- src/main/java/com/example/polls/
+|       |-- config/              Security and MVC configuration
+|       |-- controller/          REST API controllers
+|       |-- exception/           Application exceptions
+|       |-- model/               JPA entities
+|       |-- payload/             Request and response DTOs
+|       |-- repository/          Spring Data repositories
+|       |-- security/            JWT and authentication components
+|       |-- service/             Business logic
+|       `-- util/                Utility classes
+|
+|-- Dockerfile                   Multi-stage production image
+|-- render.yaml                  Render Blueprint
+`-- Readme.md
 ```
 
----
+## API Endpoints
 
-## 🔌 API Endpoints
+| Method | Endpoint | Description | Auth |
+| --- | --- | --- | --- |
+| POST | `/api/auth/signin` | Login | No |
+| POST | `/api/auth/signup` | Register | No |
+| GET | `/api/polls` | Get all polls | No |
+| POST | `/api/polls` | Create a poll | Yes |
+| POST | `/api/polls/{pollId}/votes` | Cast a vote | Yes |
+| GET | `/api/user/me` | Get current user | Yes |
+| GET | `/api/users/{username}` | Get user profile | No |
+| GET | `/api/users/{username}/polls` | Get a user's polls | No |
+| GET | `/api/users/{username}/votes` | Get a user's votes | No |
+| GET | `/api/user/checkUsernameAvailability` | Check username availability | No |
+| GET | `/api/user/checkEmailAvailability` | Check email availability | No |
 
-### Authentication
-| Method | Endpoint                              | Description            | Auth  |
-| ------ | ------------------------------------- | ---------------------- | ----- |
-| POST   | `/api/auth/signin`                    | Login                  | No    |
-| POST   | `/api/auth/signup`                    | Register               | No    |
-
-### Polls
-| Method | Endpoint                              | Description            | Auth  |
-| ------ | ------------------------------------- | ---------------------- | ----- |
-| GET    | `/api/polls`                          | Get all polls          | No    |
-| POST   | `/api/polls`                          | Create a poll          | Yes   |
-| POST   | `/api/polls/{pollId}/votes`           | Cast a vote            | Yes   |
-
-### Users
-| Method | Endpoint                              | Description            | Auth  |
-| ------ | ------------------------------------- | ---------------------- | ----- |
-| GET    | `/api/user/me`                        | Get current user       | Yes   |
-| GET    | `/api/users/{username}`               | Get user profile       | No    |
-| GET    | `/api/users/{username}/polls`         | Get user's polls       | No    |
-| GET    | `/api/users/{username}/votes`         | Get user's votes       | No    |
-| GET    | `/api/user/checkUsernameAvailability` | Check username         | No    |
-| GET    | `/api/user/checkEmailAvailability`    | Check email            | No    |
-
----
-
-## 🚀 Getting Started (Local Development)
+## Local Development
 
 ### Prerequisites
 
-- Java 11+
-- Maven 3.6+
-- Node.js 14+
-- PostgreSQL 12+
+- Java 11 or newer
+- Maven 3.6 or newer
+- Node.js 14
+- PostgreSQL 12 or newer
 
 ### 1. Clone the repository
 
@@ -165,24 +125,46 @@ git clone https://github.com/Vishnusige/Polling-App.git
 cd Polling-App
 ```
 
-### 2. Set up PostgreSQL
+### 2. Create the database
 
 ```sql
 CREATE DATABASE polling_app;
 ```
 
-### 3. Run the Backend
+### 3. Configure environment variables
+
+Set these values before starting the backend:
+
+```bash
+export DB_HOST=localhost
+export DB_PORT=5432
+export DB_NAME=polling_app
+export DB_USERNAME=postgres
+export DB_PASSWORD=postgres
+export JWT_SECRET=replace-with-a-long-random-secret
+```
+
+For Windows PowerShell:
+
+```powershell
+$env:DB_HOST="localhost"
+$env:DB_PORT="5432"
+$env:DB_NAME="polling_app"
+$env:DB_USERNAME="postgres"
+$env:DB_PASSWORD="postgres"
+$env:JWT_SECRET="replace-with-a-long-random-secret"
+```
+
+### 4. Run the backend
 
 ```bash
 cd polling-app-server
 mvn spring-boot:run
 ```
 
-The server starts on **http://localhost:5000**.
+The backend starts on `http://localhost:5000`. Default roles (`ROLE_USER` and `ROLE_ADMIN`) are inserted automatically on startup.
 
-> Default roles (`ROLE_USER` and `ROLE_ADMIN`) are automatically inserted on first startup.
-
-### 4. Run the Frontend
+### 5. Run the frontend
 
 ```bash
 cd polling-app-client
@@ -190,13 +172,11 @@ npm install
 npm start
 ```
 
-The client starts on **http://localhost:3000**.
+The development client starts on `http://localhost:3000`.
 
----
+## Docker
 
-## 🐳 Docker
-
-Build and run with Docker:
+Build and run the production image:
 
 ```bash
 docker build -t polling-app .
@@ -205,46 +185,30 @@ docker run -p 5000:5000 \
   -e DB_PORT=5432 \
   -e DB_NAME=polling_app \
   -e DB_USERNAME=postgres \
-  -e DB_PASSWORD=yourpassword \
-  -e JWT_SECRET=yourSecretKey \
+  -e DB_PASSWORD=replace-with-db-password \
+  -e JWT_SECRET=replace-with-a-long-random-secret \
   polling-app
 ```
 
----
+## Deployment on Render
 
-## ☁️ Deployment (Render)
+This app is configured for Render Blueprint deployment using `render.yaml`.
 
-This app is configured for **one-click deployment** on [Render](https://render.com) using the included `render.yaml` Blueprint.
+1. Fork or connect this repository in Render.
+2. Create a new Blueprint from the repository and select the deployment branch.
+3. Render provisions a Docker web service and a PostgreSQL database.
+4. Database environment variables are wired from the managed PostgreSQL service.
+5. `JWT_SECRET` is generated by Render.
+6. The deployed app is available at [https://polling-app-z854.onrender.com](https://polling-app-z854.onrender.com).
 
-1. Fork this repo to your GitHub
-2. Go to [Render Dashboard](https://dashboard.render.com) → **New** → **Blueprint**
-3. Connect your GitHub repo and select the branch
-4. Render auto-detects `render.yaml` and provisions:
-   - 🖥️ A **Web Service** (Docker-based)
-   - 🗄️ A **PostgreSQL Database** (free tier)
-5. Wait ~5 minutes for the build and deployment
-6. Your app is live! 🎉
+## Production Notes
 
----
+- The frontend is built into Spring Boot static resources during the Docker build.
+- The backend serves the React app and API from the same origin.
+- PostgreSQL schema management uses Hibernate `ddl-auto=update`.
+- Role initialization is handled by `polling-app-server/src/main/resources/data.sql`.
+- Sensitive values are supplied through environment variables.
 
-## 🤝 Contributing
+## License
 
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the project
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
----
-
-## 📄 License
-
-This project is open source and available under the [MIT License](LICENSE).
-
----
-
-<p align="center">
-  Made with ❤️ by <a href="https://github.com/Vishnusige">Vishnusige</a>
-</p>
+This project is open source and available under the MIT License.
