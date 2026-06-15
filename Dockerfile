@@ -16,7 +16,7 @@ RUN npm run build
 # ============================================
 # Stage 2: Build Spring Boot Application
 # ============================================
-FROM maven:3.8-openjdk-11 AS server-build
+FROM maven:3.8-eclipse-temurin-11 AS server-build
 
 WORKDIR /app/server
 
@@ -36,7 +36,7 @@ RUN mvn package -DskipTests -B
 # ============================================
 # Stage 3: Production Runtime
 # ============================================
-FROM openjdk:11-jre-slim
+FROM eclipse-temurin:11-jre-alpine
 
 WORKDIR /app
 
