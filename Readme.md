@@ -1,4 +1,4 @@
-<![CDATA[# 📊 Polling App — Full Stack Polls Application
+# 📊 Polling App — Full Stack Polls Application
 
 A full-stack polling application similar to Twitter polls, built with **React**, **Spring Boot**, **Spring Security**, **JWT Authentication**, and **PostgreSQL**.
 
@@ -6,7 +6,7 @@ A full-stack polling application similar to Twitter polls, built with **React**,
 
 ## 🌐 Live Demo
 
-> **[https://polling-app-xxxx.onrender.com](https://polling-app-xxxx.onrender.com)**
+> **[https://polling-app-z854.onrender.com](https://polling-app-z854.onrender.com)**
 >
 > ⚠️ _The app is hosted on Render's free tier. The first request may take ~30 seconds if the server has spun down due to inactivity._
 
@@ -248,4 +248,3 @@ This project is open source and available under the [MIT License](LICENSE).
 <p align="center">
   Made with ❤️ by <a href="https://github.com/Vishnusige">Vishnusige</a>
 </p>
-]]>
