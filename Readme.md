@@ -1,81 +1,251 @@
-## Building a Full Stack Polls app similar to twitter polls with Spring Boot, Spring Security, JWT, React and Ant Design
+<![CDATA[# 📊 Polling App — Full Stack Polls Application
 
-### Live Demo
- 	 
-The application is hosted on AWS free tier. Check out the live demo at https://polls.callicoder.com
+A full-stack polling application similar to Twitter polls, built with **React**, **Spring Boot**, **Spring Security**, **JWT Authentication**, and **PostgreSQL**.
 
-### Tutorials
+---
 
-I've written a complete tutorial series for this application on The CalliCoder Blog -
+## 🌐 Live Demo
 
-+ [Part 1: Bootstrapping the Project and creating the basic domain models and repositories](https://www.callicoder.com/spring-boot-spring-security-jwt-mysql-react-app-part-1/)
+> **[https://polling-app-xxxx.onrender.com](https://polling-app-xxxx.onrender.com)**
+>
+> ⚠️ _The app is hosted on Render's free tier. The first request may take ~30 seconds if the server has spun down due to inactivity._
 
-+ [Part 2: Configuring Spring Security along with JWT authentication and Building Rest APIs for Login and SignUp](https://www.callicoder.com/spring-boot-spring-security-jwt-mysql-react-app-part-2/)
+---
 
-+ [Part 3: Building Rest APIs for creating Polls, voting for a choice in a Poll, retrieving user profile etc](https://www.callicoder.com/spring-boot-spring-security-jwt-mysql-react-app-part-3/)
+## 📸 Screenshots
 
-+ [Part 4: Building the front-end using React and Ant Design](https://www.callicoder.com/spring-boot-spring-security-jwt-mysql-react-app-part-4/)
+<table>
+  <tr>
+    <td align="center"><b>🔐 Login Page</b></td>
+    <td align="center"><b>📝 Create Poll</b></td>
+  </tr>
+  <tr>
+    <td><img src="screenshots/login_page.png" alt="Login Page" width="400"/></td>
+    <td><img src="screenshots/create_poll.png" alt="Create Poll" width="400"/></td>
+  </tr>
+  <tr>
+    <td align="center"><b>🗳️ Voting Page</b></td>
+    <td align="center"><b>📊 Dashboard</b></td>
+  </tr>
+  <tr>
+    <td><img src="screenshots/voting_page.png" alt="Voting Page" width="400"/></td>
+    <td><img src="screenshots/dashboard.png" alt="Dashboard" width="400"/></td>
+  </tr>
+</table>
 
-## Steps to Setup the Spring Boot Back end app (polling-app-server)
+---
 
-1. **Clone the application**
+## 🏗️ Architecture
 
-	```bash
-	git clone https://github.com/callicoder/spring-security-react-ant-design-polls-app.git
-	cd polling-app-server
-	```
+```
+┌─────────────────────────────────────────────────────┐
+│                    Client (Browser)                  │
+│                  React + Ant Design                  │
+└──────────────────────┬──────────────────────────────┘
+                       │ REST API (JSON)
+                       ▼
+┌─────────────────────────────────────────────────────┐
+│              Spring Boot Backend (API)               │
+│  ┌──────────────┐  ┌────────────┐  ┌──────────────┐ │
+│  │ Spring MVC   │  │  Spring    │  │     JWT      │ │
+│  │ Controllers  │  │  Security  │  │  Auth Filter │ │
+│  └──────┬───────┘  └─────┬──────┘  └──────┬───────┘ │
+│         │                │                │         │
+│  ┌──────▼────────────────▼────────────────▼───────┐ │
+│  │           Spring Data JPA (Repositories)       │ │
+│  └────────────────────┬───────────────────────────┘ │
+└───────────────────────┼─────────────────────────────┘
+                        │ JDBC
+                        ▼
+              ┌──────────────────┐
+              │    PostgreSQL    │
+              │    Database      │
+              └──────────────────┘
+```
 
-2. **Create MySQL database**
+### Tech Stack
 
-	```bash
-	create database polling_app
-	```
+| Layer            | Technology                                  |
+| ---------------- | ------------------------------------------- |
+| **Frontend**     | React 16 · Ant Design 3 · React Router 4   |
+| **Backend**      | Spring Boot 2.7 · Spring MVC · Spring Data JPA |
+| **Security**     | Spring Security · JWT (JSON Web Tokens)     |
+| **Database**     | PostgreSQL                                  |
+| **Build Tools**  | Maven (Backend) · npm (Frontend)            |
+| **Deployment**   | Render · Docker (Multi-stage build)         |
 
-3. **Change MySQL username and password as per your MySQL installation**
+---
 
-	+ open `src/main/resources/application.properties` file.
+## ✨ Features
 
-	+ change `spring.datasource.username` and `spring.datasource.password` properties as per your mysql installation
+- **User Authentication** — Signup & Login with JWT-based authentication
+- **Create Polls** — Create polls with up to 6 choices and configurable expiration
+- **Vote** — Cast your vote on active polls (one vote per user per poll)
+- **Real-time Results** — View live vote percentages with visual progress bars
+- **User Profiles** — View user profiles with their created polls and voting history
+- **Pagination** — Infinite scroll with "Load More" for poll lists
+- **Role-based Authorization** — USER and ADMIN roles powered by Spring Security
+- **Responsive Design** — Works on desktop and mobile browsers
 
-4. **Run the app**
+---
 
-	You can run the spring boot app by typing the following command -
+## 📁 Project Structure
 
-	```bash
-	mvn spring-boot:run
-	```
+```
+Polling-App/
+├── polling-app-client/          # React Frontend
+│   ├── public/                  # Static assets
+│   └── src/
+│       ├── app/                 # App component & routing
+│       ├── common/              # Shared components (Header, Footer, etc.)
+│       ├── constants/           # App constants & API config
+│       ├── poll/                # Poll components (PollList, NewPoll, Poll)
+│       ├── user/                # User components (Login, Signup, Profile)
+│       └── util/                # API utilities & helpers
+│
+├── polling-app-server/          # Spring Boot Backend
+│   └── src/main/java/com/example/polls/
+│       ├── config/              # Security & Web MVC configuration
+│       ├── controller/          # REST API controllers
+│       ├── exception/           # Custom exception handlers
+│       ├── model/               # JPA Entity models
+│       ├── payload/             # Request/Response DTOs
+│       ├── repository/          # Spring Data JPA repositories
+│       ├── security/            # JWT & auth components
+│       ├── service/             # Business logic services
+│       └── util/                # Utility classes
+│
+├── Dockerfile                   # Multi-stage Docker build
+├── render.yaml                  # Render deployment blueprint
+└── README.md
+```
 
-	The server will start on port 5000. The spring boot app includes the front end build also, so you'll be able to access the complete application on `http://localhost:5000`.
+---
 
-	You can also package the application in the form of a `jar` file and then run it like so -
+## 🔌 API Endpoints
 
-	```bash
-	mvn package
-	java -jar target/polls-0.0.1-SNAPSHOT.jar
-	```
-5. **Add the default Roles**
-	
-	The spring boot app uses role based authorization powered by spring security. Please execute the following sql queries in the database to insert the `USER` and `ADMIN` roles.
+### Authentication
+| Method | Endpoint                              | Description            | Auth  |
+| ------ | ------------------------------------- | ---------------------- | ----- |
+| POST   | `/api/auth/signin`                    | Login                  | No    |
+| POST   | `/api/auth/signup`                    | Register               | No    |
 
-	```sql
-	INSERT INTO roles(name) VALUES('ROLE_USER');
-	INSERT INTO roles(name) VALUES('ROLE_ADMIN');
-	```
+### Polls
+| Method | Endpoint                              | Description            | Auth  |
+| ------ | ------------------------------------- | ---------------------- | ----- |
+| GET    | `/api/polls`                          | Get all polls          | No    |
+| POST   | `/api/polls`                          | Create a poll          | Yes   |
+| POST   | `/api/polls/{pollId}/votes`           | Cast a vote            | Yes   |
 
-	Any new user who signs up to the app is assigned the `ROLE_USER` by default.
+### Users
+| Method | Endpoint                              | Description            | Auth  |
+| ------ | ------------------------------------- | ---------------------- | ----- |
+| GET    | `/api/user/me`                        | Get current user       | Yes   |
+| GET    | `/api/users/{username}`               | Get user profile       | No    |
+| GET    | `/api/users/{username}/polls`         | Get user's polls       | No    |
+| GET    | `/api/users/{username}/votes`         | Get user's votes       | No    |
+| GET    | `/api/user/checkUsernameAvailability` | Check username         | No    |
+| GET    | `/api/user/checkEmailAvailability`    | Check email            | No    |
 
-## Steps to Setup the React Front end app (polling-app-client)
+---
 
-First go to the `polling-app-client` folder -
+## 🚀 Getting Started (Local Development)
+
+### Prerequisites
+
+- Java 11+
+- Maven 3.6+
+- Node.js 14+
+- PostgreSQL 12+
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/Vishnusige/Polling-App.git
+cd Polling-App
+```
+
+### 2. Set up PostgreSQL
+
+```sql
+CREATE DATABASE polling_app;
+```
+
+### 3. Run the Backend
+
+```bash
+cd polling-app-server
+mvn spring-boot:run
+```
+
+The server starts on **http://localhost:5000**.
+
+> Default roles (`ROLE_USER` and `ROLE_ADMIN`) are automatically inserted on first startup.
+
+### 4. Run the Frontend
 
 ```bash
 cd polling-app-client
+npm install
+npm start
 ```
 
-Then type the following command to install the dependencies and start the application -
+The client starts on **http://localhost:3000**.
+
+---
+
+## 🐳 Docker
+
+Build and run with Docker:
 
 ```bash
-npm install && npm start
+docker build -t polling-app .
+docker run -p 5000:5000 \
+  -e DB_HOST=your-db-host \
+  -e DB_PORT=5432 \
+  -e DB_NAME=polling_app \
+  -e DB_USERNAME=postgres \
+  -e DB_PASSWORD=yourpassword \
+  -e JWT_SECRET=yourSecretKey \
+  polling-app
 ```
 
-The front-end server will start on port `3000`.
+---
+
+## ☁️ Deployment (Render)
+
+This app is configured for **one-click deployment** on [Render](https://render.com) using the included `render.yaml` Blueprint.
+
+1. Fork this repo to your GitHub
+2. Go to [Render Dashboard](https://dashboard.render.com) → **New** → **Blueprint**
+3. Connect your GitHub repo and select the branch
+4. Render auto-detects `render.yaml` and provisions:
+   - 🖥️ A **Web Service** (Docker-based)
+   - 🗄️ A **PostgreSQL Database** (free tier)
+5. Wait ~5 minutes for the build and deployment
+6. Your app is live! 🎉
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+---
+
+## 📄 License
+
+This project is open source and available under the [MIT License](LICENSE).
+
+---
+
+<p align="center">
+  Made with ❤️ by <a href="https://github.com/Vishnusige">Vishnusige</a>
+</p>
+]]>

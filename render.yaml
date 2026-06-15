@@ -1,0 +1,38 @@
+databases:
+  - name: polling-db
+    databaseName: polling_app
+    plan: free
+    region: oregon
+
+services:
+  - type: web
+    name: polling-app
+    runtime: docker
+    plan: free
+    region: oregon
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: DB_HOST
+        fromDatabase:
+          name: polling-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: polling-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: polling-db
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: polling-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: polling-db
+          property: password
+      - key: JWT_SECRET
+        generateValue: true
+      - key: PORT
+        value: "10000"
